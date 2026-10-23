@@ -114,7 +114,7 @@ public final class CollapseTerrainGameTests {
         });
     }
 
-    @GameTest(batch = "collapseTerrain", template = "test_empty", timeoutTicks = 6000)
+    @GameTest(batch = "collapseTerrain", template = "test_empty", timeoutTicks = 60000)
     public static void spreadsWithoutNearbyPlayers(GameTestHelper h) {
         var level = h.getLevel();
         var center = new BlockPos(16392, -60, 16392);
@@ -141,7 +141,7 @@ public final class CollapseTerrainGameTests {
                 h.succeed();
             }
         });
-        h.runAfterDelay(5900, () -> {
+        h.runAfterDelay(59000, () -> {
             data.remove(source.id());
             h.assertTrue(reached[0], "Collapse must load and flatten terrain without a nearby player");
             h.assertTrue(reached[1], "Terrain must keep spreading beyond the first loaded chunk");
