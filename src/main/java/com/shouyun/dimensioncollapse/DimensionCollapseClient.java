@@ -33,6 +33,8 @@ public class DimensionCollapseClient {
 
     public DimensionCollapseClient(IEventBus modEventBus, ModContainer container) {
         container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
+        container.registerConfig(net.neoforged.fml.config.ModConfig.Type.CLIENT,
+                com.shouyun.dimensioncollapse.client.EffectsConfig.SPEC);
 
         modEventBus.addListener(CollapseRenderer::registerShaders);
         modEventBus.addListener((net.neoforged.neoforge.client.event.EntityRenderersEvent.RegisterRenderers event) ->
@@ -48,10 +50,18 @@ public class DimensionCollapseClient {
         NeoForge.EVENT_BUS.addListener(CollapseRenderer::onRenderLevelStage);
         NeoForge.EVENT_BUS.addListener(CollapseEffects::onClientTick);
         NeoForge.EVENT_BUS.addListener(CollapseEffects::onCameraAngles);
+        NeoForge.EVENT_BUS.addListener(com.shouyun.dimensioncollapse.client.FoilEffects::tick);
+        NeoForge.EVENT_BUS.addListener(com.shouyun.dimensioncollapse.client.FoilEffects::camera);
+        NeoForge.EVENT_BUS.addListener(com.shouyun.dimensioncollapse.client.FoilEffects::fov);
+        NeoForge.EVENT_BUS.addListener(com.shouyun.dimensioncollapse.client.FoilEffects::hud);
+        NeoForge.EVENT_BUS.addListener(com.shouyun.dimensioncollapse.client.FoilEffects::renderRings);
         // Lowest priority without receiving cancelled events, so Pre and Post always pair up.
         NeoForge.EVENT_BUS.addListener(EventPriority.LOWEST, false, RenderLivingEvent.Pre.class, CollapseEffects::onRenderLivingPre);
         NeoForge.EVENT_BUS.addListener(EventPriority.LOWEST, false, RenderLivingEvent.Post.class, CollapseEffects::onRenderLivingPost);
-        NeoForge.EVENT_BUS.addListener((ClientPlayerNetworkEvent.LoggingOut event) -> CollapseClientState.clear());
+        NeoForge.EVENT_BUS.addListener((ClientPlayerNetworkEvent.LoggingOut event) -> {
+            CollapseClientState.clear();
+            com.shouyun.dimensioncollapse.client.FoilEffects.clear();
+        });
     }
 
     private static void registerBlockColors(RegisterColorHandlersEvent.Block event) {

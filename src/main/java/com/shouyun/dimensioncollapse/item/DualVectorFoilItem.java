@@ -18,6 +18,8 @@ public class DualVectorFoilItem extends DescribedItem {
             foil.setItem(stack);
             foil.shootFromRotation(player, player.getXRot(), player.getYRot(), 0, 0.65f, 0);
             if (!level.addFreshEntity(foil)) return InteractionResultHolder.fail(stack);
+            com.shouyun.dimensioncollapse.network.FoilFxPayload.send((net.minecraft.server.level.ServerLevel) level,
+                    foil.position(), false);
             stack.consume(1, player);
             player.getCooldowns().addCooldown(this, 20);
             level.playSound(null, player.blockPosition(), ModSounds.LAUNCHER_FIRE.get(), SoundSource.PLAYERS, 0.5f, 1.25f);

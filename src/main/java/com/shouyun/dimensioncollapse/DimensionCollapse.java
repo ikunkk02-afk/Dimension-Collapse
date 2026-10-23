@@ -54,7 +54,10 @@ public class DimensionCollapse {
     }
 
     private static void registerPayloads(RegisterPayloadHandlersEvent event) {
-        PayloadRegistrar registrar = event.registrar("2");
+        PayloadRegistrar registrar = event.registrar("3");
+        registrar.playToClient(com.shouyun.dimensioncollapse.network.FoilFxPayload.TYPE,
+                com.shouyun.dimensioncollapse.network.FoilFxPayload.STREAM_CODEC,
+                (payload, context) -> CollapseClientState.enqueue(payload));
         registrar.playToClient(CollapseSyncPayload.TYPE, CollapseSyncPayload.STREAM_CODEC,
                 (payload, context) -> CollapseClientState.update(payload.dimension(), payload.sources()));
         registrar.playToClient(FlattenedEntityPayload.TYPE, FlattenedEntityPayload.STREAM_CODEC, (payload, context) -> {

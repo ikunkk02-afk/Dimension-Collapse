@@ -60,6 +60,8 @@ public class FoilLauncherItem extends DescribedItem {
             foil.setItem(ammo.isEmpty() ? ModItems.DUAL_VECTOR_FOIL.get().getDefaultInstance() : ammo.copyWithCount(1));
             foil.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0f, LAUNCH_SPEED, 0.0f);
             if (!level.addFreshEntity(foil)) return;
+            com.shouyun.dimensioncollapse.network.FoilFxPayload.send((net.minecraft.server.level.ServerLevel) level,
+                    foil.position(), false);
             level.playSound(null, player.getX(), player.getY(), player.getZ(), ModSounds.LAUNCHER_FIRE.get(),
                     SoundSource.PLAYERS, 1.0f, 1.0f);
             if (!infinite) ammo.shrink(1);

@@ -2,11 +2,9 @@ package com.shouyun.dimensioncollapse.entity;
 
 import com.shouyun.dimensioncollapse.collapse.CollapseCommand;
 import com.shouyun.dimensioncollapse.collapse.CollapseManager;
-import com.shouyun.dimensioncollapse.collapse.CollapseData;
 import com.shouyun.dimensioncollapse.registry.ModEntities;
 import com.shouyun.dimensioncollapse.registry.ModItems;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -27,9 +25,7 @@ public class DualVectorFoilEntity extends ThrowableItemProjectile {
     @Override public void tick() {
         super.tick();
         if (isRemoved()) return;
-        if (level().isClientSide) {
-            level().addParticle(ParticleTypes.END_ROD, getX(), getY(), getZ(), 0, 0, 0);
-        } else if (++flightTicks >= 100) {
+        if (!level().isClientSide && ++flightTicks >= 100) {
             unfold();
         }
     }
@@ -48,7 +44,7 @@ public class DualVectorFoilEntity extends ThrowableItemProjectile {
         if (level.isInWorldBounds(pos)) {
             CollapseManager.start(level, pos, CollapseCommand.DEFAULT_INITIAL_RADIUS,
                     CollapseCommand.DEFAULT_INITIAL_SPEED, CollapseCommand.DEFAULT_ACCELERATION);
-            level.sendParticles(ParticleTypes.FLASH, getX(), getY(), getZ(), 1, 0, 0, 0, 0);
+            com.shouyun.dimensioncollapse.network.FoilFxPayload.send(level, position(), true);
         }
         discard();
     }

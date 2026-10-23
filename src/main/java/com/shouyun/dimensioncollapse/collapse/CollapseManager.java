@@ -48,6 +48,7 @@ public final class CollapseManager {
     private static final int FLAGS = Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_SUPPRESS_DROPS;
     private static final int ENTITY_SCAN_INTERVAL = 5;
     private static final Map<ResourceKey<Level>, Set<Long>> LOADED_CHUNKS = new ConcurrentHashMap<>();
+    private static final Map<ResourceKey<Level>, Map<Integer, WorkCursor>> WORK_CURSORS = new HashMap<>();
 
     private CollapseManager() {}
 
@@ -130,6 +131,8 @@ public final class CollapseManager {
 
     private static void onServerStopped(ServerStoppedEvent event) {
         LOADED_CHUNKS.clear();
+        WORK_CURSORS.clear();
+        CollapseChunkLoader.clear();
     }
 
     private static void onLevelTick(LevelTickEvent.Post event) {
@@ -137,15 +140,20 @@ public final class CollapseManager {
         Set<Long> loaded = LOADED_CHUNKS.get(level.dimension());
         com.shouyun.dimensioncollapse.block.SuppressionController.tick(level, loaded == null ? Set.of() : loaded);
         List<CollapseSource> sources = CollapseData.get(level).sources();
+        long now = level.getGameTime();
+        CollapseChunkLoader.tick(level, sources, now);
+        Map<Integer, WorkCursor> cursors = WORK_CURSORS.computeIfAbsent(level.dimension(), key -> new HashMap<>());
+        cursors.keySet().removeIf(id -> sources.stream().noneMatch(source -> source.id() == id));
         if (sources.isEmpty() || loaded == null) return;
 
-        long now = level.getGameTime();
         if (now % ENTITY_SCAN_INTERVAL == 0) {
             flattenEntities(level, sources, now);
         }
 
         int budget = Config.BLOCKS_PER_TICK.getAsInt();
-        for (CollapseSource source : sources) {
+        // Rotate the first source so a busy collapse cannot starve all the others.
+        for (int i = 0; i < sources.size(); i++) {
+            CollapseSource source = sources.get((int) ((now + i) % sources.size()));
             budget = advance(level, source, now, loaded, budget);
             if (budget <= 0) break;
         }
@@ -207,7 +215,12 @@ public final class CollapseManager {
                 net.minecraft.sounds.SoundSource.HOSTILE, 0.65f, 0.85f + entity.getRandom().nextFloat() * 0.3f);
     }
 
-    private record Job(LevelChunk chunk, double done) {}
+    private record Job(LevelChunk chunk, double done, double target) {}
+
+    private static final class WorkCursor {
+        long lastChunk = Long.MIN_VALUE;
+        boolean nearbyTurn = true;
+    }
 
     private static int advance(ServerLevel level, CollapseSource source, long now, Set<Long> loaded, int budget) {
         double radius = source.radius(now);
@@ -223,30 +236,65 @@ public final class CollapseManager {
             LevelChunk chunk = level.getChunkSource().getChunkNow(chunkX, chunkZ);
             if (chunk == null) continue;
             double done = chunk.getData(ModAttachments.COLLAPSE_PROGRESS).getOrDefault(key, -1.0);
-            if (done >= radius) continue;
+            double target = Math.min(radius, farthestDistance(level, center, chunk.getPos()));
+            if (done >= target) continue;
             // Nothing in this chunk is closer than `nearest`, so skip straight to it.
-            jobs.add(new Job(chunk, Math.max(done, nearest - 1.0)));
+            jobs.add(new Job(chunk, Math.max(done, nearest - 1.0), target));
         }
-        jobs.sort(Comparator.comparingDouble(Job::done));
+        WorkCursor cursor = WORK_CURSORS.get(level.dimension()).computeIfAbsent(source.id(), keyId -> new WorkCursor());
+        boolean nearbyTurn = cursor.nearbyTurn && !level.players().isEmpty();
+        cursor.nearbyTurn = !cursor.nearbyTurn;
+        int first = 0;
+        if (nearbyTurn) {
+            // A player approaching engulfed terrain should see it catch up promptly.
+            jobs.sort(Comparator.comparingDouble(job -> distanceToPlayers(level, job.chunk().getPos())));
+        } else {
+            // Sorting by the completed radius starved outer chunks behind dense inner terrain.
+            // Resume after the last serviced chunk instead, including chunks loaded after the front passed.
+            jobs.sort(Comparator.comparingLong(job -> job.chunk().getPos().toLong()));
+            while (first < jobs.size() && jobs.get(first).chunk().getPos().toLong() <= cursor.lastChunk) first++;
+            if (first == jobs.size()) first = 0;
+        }
 
         double maxStep = Config.MAX_STEP_PER_CHUNK.getAsDouble();
-        for (Job job : jobs) {
+        for (int i = 0; i < jobs.size(); i++) {
             if (budget <= 0) break;
-            double target = Math.min(radius, job.done() + maxStep);
+            Job job = jobs.get((first + i) % jobs.size());
+            double target = Math.min(job.target(), job.done() + maxStep);
             budget -= flattenShell(level, job.chunk(), center, job.done(), target);
             Map<String, Double> progress = new HashMap<>(job.chunk().getData(ModAttachments.COLLAPSE_PROGRESS));
             progress.put(key, target);
             job.chunk().setData(ModAttachments.COLLAPSE_PROGRESS, progress);
+            if (!nearbyTurn) cursor.lastChunk = job.chunk().getPos().toLong();
         }
         return budget;
     }
 
-    private static double horizontalDistanceToChunk(BlockPos center, int chunkX, int chunkZ) {
+    private static double distanceToPlayers(ServerLevel level, ChunkPos chunk) {
+        double nearest = Double.POSITIVE_INFINITY;
+        for (ServerPlayer player : level.players()) {
+            double dx = player.getX() - (chunk.getMinBlockX() + 7.5);
+            double dz = player.getZ() - (chunk.getMinBlockZ() + 7.5);
+            nearest = Math.min(nearest, dx * dx + dz * dz);
+        }
+        return nearest;
+    }
+
+    static double horizontalDistanceToChunk(BlockPos center, int chunkX, int chunkZ) {
         int minX = chunkX << 4;
         int minZ = chunkZ << 4;
         int dx = Math.clamp(center.getX(), minX, minX + 15) - center.getX();
         int dz = Math.clamp(center.getZ(), minZ, minZ + 15) - center.getZ();
         return Math.sqrt((double) dx * dx + (double) dz * dz);
+    }
+
+    /** Once this radius is reached, no further shell can intersect the chunk's buildable volume. */
+    static double farthestDistance(ServerLevel level, BlockPos center, ChunkPos chunk) {
+        double dx = Math.max(Math.abs((double) chunk.getMinBlockX() - center.getX()), Math.abs((double) chunk.getMaxBlockX() - center.getX()));
+        double dz = Math.max(Math.abs((double) chunk.getMinBlockZ() - center.getZ()), Math.abs((double) chunk.getMaxBlockZ() - center.getZ()));
+        double dy = Math.max(Math.abs((double) level.getMinBuildHeight() - center.getY()), Math.abs((double) level.getMaxBuildHeight() - 1 - center.getY()));
+        // Round outward so squaring the radius cannot exclude the furthest corner by an ULP.
+        return Math.nextUp(Math.sqrt(dx * dx + dy * dy + dz * dz));
     }
 
     /**
@@ -280,7 +328,8 @@ public final class CollapseManager {
                 if (h2 > inner2 && planeInWorld) {
                     changed += flatten(level, chunk, planePos, 0, planePos, planeInWorld);
                 }
-                int maxDy = (int) Math.floor(Math.sqrt(outer2 - h2));
+                int maxDy = (int) Math.min(Math.max((long) center.getY() - minY, (long) maxY - center.getY()),
+                        Math.floor(Math.sqrt(outer2 - h2)));
                 int minDy = inner2 > h2 ? Math.max(1, (int) Math.floor(Math.sqrt(inner2 - h2))) : 1;
                 for (int ady = minDy; ady <= maxDy; ady++) {
                     double d2 = h2 + (double) ady * ady;

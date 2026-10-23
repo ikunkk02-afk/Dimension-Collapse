@@ -79,5 +79,15 @@
   "message.dimensioncollapse.escape.unavailable": "当前维度没有坍缩，或当前状态无法撤离。",
   "message.dimensioncollapse.escape.searching": "正在定位远离坍缩的安全落脚点……",
   "message.dimensioncollapse.escape.failed": "未找到安全落脚点，请稍后重试。玩家与物品保持原位。",
-  "message.dimensioncollapse.escape.success": "已撤离至三维区域：%s"
+  "message.dimensioncollapse.escape.success": "已撤离至三维区域：%s",
+  "hud.dimensioncollapse.launch": "警戒 // 二向箔已释放",
+  "hud.dimensioncollapse.unfold": "警告 // 空间正在二维化",
+  "hud.dimensioncollapse.evacuate": "空间结构失稳 — 立即撤离",
+  "hud.dimensioncollapse.charging": "约束力场充能中",
+  "hud.dimensioncollapse.ready": "充能完毕 — 松开发射",
+  "dimensioncollapse.configuration.section.dimensioncollapse.client.toml": "视觉特效",
+  "dimensioncollapse.configuration.section.dimensioncollapse.client.toml.title": "视觉特效",
+  "dimensioncollapse.configuration.cameraShake": "镜头震动强度",
+  "dimensioncollapse.configuration.warningFlash": "红色警告闪屏强度",
+  "dimensioncollapse.configuration.extraParticles": "二向箔增强粒子"
 }

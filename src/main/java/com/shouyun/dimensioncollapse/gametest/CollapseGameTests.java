@@ -77,6 +77,11 @@ public class CollapseGameTests {
             var payload = new FlattenedEntityPayload(14, 12.5, -20.9375, 33.25);
             FlattenedEntityPayload.STREAM_CODEC.encode(buf, payload);
             h.assertTrue(FlattenedEntityPayload.STREAM_CODEC.decode(buf).equals(payload), "Flatten sync must carry exact final XYZ");
+            var fx = new com.shouyun.dimensioncollapse.network.FoilFxPayload(
+                    net.minecraft.world.level.Level.OVERWORLD, 12.5, -20.9375, 33.25, true);
+            com.shouyun.dimensioncollapse.network.FoilFxPayload.STREAM_CODEC.encode(buf, fx);
+            h.assertTrue(com.shouyun.dimensioncollapse.network.FoilFxPayload.STREAM_CODEC.decode(buf).equals(fx),
+                    "Foil effect sync must preserve dimension, exact position and unfold phase");
         } finally { buf.release(); }
         h.succeed();
     }

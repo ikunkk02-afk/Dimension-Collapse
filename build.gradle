@@ -65,6 +65,20 @@ neoForge {
             programArguments.addAll '--width', '1280', '--height', '800'
         }
 
+        foilSmokeClient {
+            client()
+            gameDirectory = project.file('build/foil-smoke-run')
+            systemProperty 'dimensioncollapse.foilSmoke', 'true'
+            programArguments.addAll '--width', '1280', '--height', '800'
+        }
+
+        terrainSmokeClient {
+            client()
+            gameDirectory = project.file('build/terrain-smoke-run')
+            systemProperty 'dimensioncollapse.terrainSmoke', 'true'
+            programArguments.addAll '--width', '1280', '--height', '800'
+        }
+
         server {
             server()
             programArgument '--nogui'

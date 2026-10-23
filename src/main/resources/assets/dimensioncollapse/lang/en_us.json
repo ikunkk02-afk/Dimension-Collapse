@@ -79,5 +79,15 @@
   "message.dimensioncollapse.escape.unavailable": "No collapse in this dimension, or evacuation is unavailable in this state.",
   "message.dimensioncollapse.escape.searching": "Locating safe ground far outside the collapse…",
   "message.dimensioncollapse.escape.failed": "No safe landing found. Try again shortly. You and your items remain here.",
-  "message.dimensioncollapse.escape.success": "Evacuated to three-dimensional space: %s"
+  "message.dimensioncollapse.escape.success": "Evacuated to three-dimensional space: %s",
+  "hud.dimensioncollapse.launch": "CAUTION // FOIL RELEASED",
+  "hud.dimensioncollapse.unfold": "WARNING // DIMENSIONAL COLLAPSE",
+  "hud.dimensioncollapse.evacuate": "SPATIAL INTEGRITY LOST - EVACUATE",
+  "hud.dimensioncollapse.charging": "CONTAINMENT CHARGING",
+  "hud.dimensioncollapse.ready": "CHARGE COMPLETE - RELEASE TO FIRE",
+  "dimensioncollapse.configuration.section.dimensioncollapse.client.toml": "Visual Effects",
+  "dimensioncollapse.configuration.section.dimensioncollapse.client.toml.title": "Visual Effects",
+  "dimensioncollapse.configuration.cameraShake": "Camera Shake Strength",
+  "dimensioncollapse.configuration.warningFlash": "Red Warning Flash Strength",
+  "dimensioncollapse.configuration.extraParticles": "Extra Foil Particles"
 }

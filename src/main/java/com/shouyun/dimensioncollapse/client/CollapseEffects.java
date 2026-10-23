@@ -76,7 +76,7 @@ public final class CollapseEffects {
 
     public static void onCameraAngles(ViewportEvent.ComputeCameraAngles event) {
         Minecraft mc = Minecraft.getInstance();
-        if (mc.level == null) return;
+        if (mc.level == null || mc.isPaused()) return;
         double time = mc.level.getGameTime() + event.getPartialTick();
         Vec3 cameraPos = event.getCamera().getPosition();
         ActiveCollapse collapse = ActiveCollapse.find(mc.level, cameraPos, time);
@@ -84,7 +84,8 @@ public final class CollapseEffects {
 
         double proximity = frontProximity(collapse.shellDistance(cameraPos));
         if (proximity <= 0.0) return;
-        double intensity = proximity * proximity * (0.35 + Math.min(collapse.speed() / 6.0, 1.0));
+        double intensity = proximity * proximity * (0.35 + Math.min(collapse.speed() / 6.0, 1.0))
+                * EffectsConfig.CAMERA_SHAKE.get();
         double t = time / 20.0;
         float yaw = (float) ((Math.sin(t * 13.1) + Math.sin(t * 29.3 + 1.7) * 0.5) * intensity * 0.6);
         float pitch = (float) ((Math.sin(t * 17.7 + 0.4) + Math.sin(t * 31.9) * 0.5) * intensity * 0.5);
