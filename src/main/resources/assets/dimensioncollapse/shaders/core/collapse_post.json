@@ -1,0 +1,18 @@
+{
+    "vertex": "dimensioncollapse:collapse_post",
+    "fragment": "dimensioncollapse:collapse_post",
+    "samplers": [
+        { "name": "SceneSampler" },
+        { "name": "DepthSampler" }
+    ],
+    "uniforms": [
+        { "name": "ViewProj", "type": "matrix4x4", "count": 16, "values": [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ] },
+        { "name": "InvViewProj", "type": "matrix4x4", "count": 16, "values": [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ] },
+        { "name": "Center", "type": "float", "count": 3, "values": [ 0.0, 0.0, 0.0 ] },
+        { "name": "PlaneY", "type": "float", "count": 1, "values": [ 0.0 ] },
+        { "name": "Radius", "type": "float", "count": 1, "values": [ 1.0 ] },
+        { "name": "Speed", "type": "float", "count": 1, "values": [ 0.0 ] },
+        { "name": "Time", "type": "float", "count": 1, "values": [ 0.0 ] },
+        { "name": "Flatland", "type": "float", "count": 1, "values": [ 0.0 ] }
+    ]
+}

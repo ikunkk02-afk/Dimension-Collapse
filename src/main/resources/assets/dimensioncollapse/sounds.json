@@ -1,0 +1,172 @@
+{
+  "collapse.start": {
+    "subtitle": "subtitles.dimensioncollapse.collapse.start",
+    "sounds": [
+      {
+        "name": "minecraft:entity.warden.sonic_boom",
+        "type": "event",
+        "pitch": 0.65
+      }
+    ]
+  },
+  "collapse.ambient": {
+    "subtitle": "subtitles.dimensioncollapse.collapse.ambient",
+    "sounds": [
+      {
+        "name": "minecraft:block.portal.ambient",
+        "type": "event",
+        "pitch": 0.6
+      }
+    ]
+  },
+  "collapse.crackle": {
+    "subtitle": "subtitles.dimensioncollapse.collapse.crackle",
+    "sounds": [
+      {
+        "name": "minecraft:block.amethyst_block.break",
+        "type": "event",
+        "pitch": 0.7
+      }
+    ]
+  },
+  "entity.flatten": {
+    "subtitle": "subtitles.dimensioncollapse.entity.flatten",
+    "sounds": [
+      {
+        "name": "minecraft:block.enchantment_table.use",
+        "type": "event",
+        "pitch": 0.6
+      }
+    ]
+  },
+  "plane.enter": {
+    "subtitle": "subtitles.dimensioncollapse.plane.enter",
+    "sounds": [
+      {
+        "name": "minecraft:block.portal.travel",
+        "type": "event",
+        "pitch": 1.6
+      }
+    ]
+  },
+  "plane.leave": {
+    "subtitle": "subtitles.dimensioncollapse.plane.leave",
+    "sounds": [
+      {
+        "name": "minecraft:block.beacon.deactivate",
+        "type": "event",
+        "pitch": 1.1
+      }
+    ]
+  },
+  "launcher.charge": {
+    "subtitle": "subtitles.dimensioncollapse.launcher.charge",
+    "sounds": [
+      {
+        "name": "minecraft:item.crossbow.loading_start",
+        "type": "event",
+        "pitch": 0.7
+      }
+    ]
+  },
+  "launcher.ready": {
+    "subtitle": "subtitles.dimensioncollapse.launcher.ready",
+    "sounds": [
+      {
+        "name": "minecraft:block.note_block.chime",
+        "type": "event",
+        "pitch": 1.4
+      }
+    ]
+  },
+  "launcher.fire": {
+    "subtitle": "subtitles.dimensioncollapse.launcher.fire",
+    "sounds": [
+      {
+        "name": "minecraft:entity.breeze.shoot",
+        "type": "event",
+        "pitch": 0.8
+      }
+    ]
+  },
+  "suppressor.activate": {
+    "subtitle": "subtitles.dimensioncollapse.suppressor.activate",
+    "sounds": [
+      {
+        "name": "minecraft:block.beacon.activate",
+        "type": "event",
+        "pitch": 0.8
+      }
+    ]
+  },
+  "suppressor.deactivate": {
+    "subtitle": "subtitles.dimensioncollapse.suppressor.deactivate",
+    "sounds": [
+      {
+        "name": "minecraft:block.beacon.deactivate",
+        "type": "event",
+        "pitch": 0.8
+      }
+    ]
+  },
+  "suppressor.hum": {
+    "subtitle": "subtitles.dimensioncollapse.suppressor.hum",
+    "sounds": [
+      {
+        "name": "minecraft:block.beacon.ambient",
+        "type": "event",
+        "pitch": 0.65
+      }
+    ]
+  },
+  "suppressor.fuel": {
+    "subtitle": "subtitles.dimensioncollapse.suppressor.fuel",
+    "sounds": [
+      {
+        "name": "minecraft:block.amethyst_block.chime",
+        "type": "event",
+        "pitch": 1.2
+      }
+    ]
+  },
+  "transfer.send": {
+    "subtitle": "subtitles.dimensioncollapse.transfer.send",
+    "sounds": [
+      {
+        "name": "minecraft:entity.enderman.teleport",
+        "type": "event",
+        "pitch": 0.8
+      }
+    ]
+  },
+  "transfer.receive": {
+    "subtitle": "subtitles.dimensioncollapse.transfer.receive",
+    "sounds": [
+      {
+        "name": "minecraft:block.amethyst_block.resonate",
+        "type": "event",
+        "pitch": 1.1
+      }
+    ]
+  },
+  "transfer.link": {
+    "subtitle": "subtitles.dimensioncollapse.transfer.link",
+    "sounds": [
+      {
+        "name": "minecraft:block.note_block.pling",
+        "type": "event",
+        "pitch": 1.4
+      }
+    ]
+  },
+  "transfer.fail": {
+    "subtitle": "subtitles.dimensioncollapse.transfer.fail",
+    "sounds": [
+      {
+        "name": "minecraft:block.note_block.bass",
+        "type": "event",
+        "pitch": 0.6
+      }
+    ]
+  }
+}

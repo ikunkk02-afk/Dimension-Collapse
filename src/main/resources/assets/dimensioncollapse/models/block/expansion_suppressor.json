@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "side": "dimensioncollapse:block/expansion_suppressor_side",
+    "top": "dimensioncollapse:block/expansion_suppressor_top",
+    "bottom": "minecraft:block/iron_block"
+  }
+}

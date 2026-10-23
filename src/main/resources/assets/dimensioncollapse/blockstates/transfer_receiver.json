@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "dimensioncollapse:block/transfer_receiver"
+    }
+  }
+}

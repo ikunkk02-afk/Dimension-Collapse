@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "active=false": {
+      "model": "dimensioncollapse:block/expansion_suppressor"
+    },
+    "active=true": {
+      "model": "dimensioncollapse:block/expansion_suppressor_active"
+    }
+  }
+}

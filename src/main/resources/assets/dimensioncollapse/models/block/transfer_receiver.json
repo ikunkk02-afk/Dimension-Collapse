@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "side": "dimensioncollapse:block/transfer_receiver_side",
+    "top": "dimensioncollapse:block/transfer_receiver_top",
+    "bottom": "minecraft:block/iron_block"
+  }
+}
