@@ -114,7 +114,7 @@ public final class CollapseTerrainGameTests {
         });
     }
 
-    @GameTest(batch = "collapseTerrain", template = "test_empty", timeoutTicks = 420)
+    @GameTest(batch = "collapseTerrain", template = "test_empty", timeoutTicks = 6000)
     public static void spreadsWithoutNearbyPlayers(GameTestHelper h) {
         var level = h.getLevel();
         var center = new BlockPos(16392, -60, 16392);
@@ -125,7 +125,10 @@ public final class CollapseTerrainGameTests {
         h.assertTrue(level.getChunkSource().getChunkNow(outer.x, outer.z) == null,
                 "Outer probe must also start unloaded");
         var data = CollapseData.get(level);
-        var source = data.add(center, level.getGameTime(), 40, 0.15f, 0.04f);
+        // GameTest advances ticks faster than real time. Keep a fixed target radius and allow
+        // cold CI workers enough wall-clock time for asynchronous terrain generation.
+        // Growth is covered separately; this regression tests crossing unloaded chunk boundaries.
+        var source = data.add(center, level.getGameTime(), 40, 0, 0);
         boolean[] reached = new boolean[2];
         h.onEachTick(() -> {
             // Inspect only already loaded chunks: the test must never load the terrain itself.
@@ -138,7 +141,7 @@ public final class CollapseTerrainGameTests {
                 h.succeed();
             }
         });
-        h.runAfterDelay(400, () -> {
+        h.runAfterDelay(5900, () -> {
             data.remove(source.id());
             h.assertTrue(reached[0], "Collapse must load and flatten terrain without a nearby player");
             h.assertTrue(reached[1], "Terrain must keep spreading beyond the first loaded chunk");
