@@ -45,6 +45,12 @@ icons['resource_transmitter'] = [
     '...odoccccodo...','...odocwwcodo...','...odocwwcodo...','...odoccccodo...',
     '...oddddddddo...','...odogogogdo...','...oddddddddo...','...odoppppodo...',
     '...osddddddso...','....osllllso....','.....oooooo.....','................']
+palette['e'] = (112, 245, 172, 255)
+icons['player_transmitter'] = [
+    '................','.....oooooo.....','...oovppppvoo...','..ovpwwwwwwpvo..',
+    '..opwdoooddwpo..','.ovwdoeeoodwvo..','.opwdoeeoodwpo..','.opwddoodddwpo..',
+    '.opwdoeeeodwpo..','.opwdoeeeodwpo..','.ovwdodododwvo..','..opwdododwpo...',
+    '..ovpwwwwwwpvo..','...oovppppvoo...','.....oooooo.....','................']
 for name, rows in icons.items():
     png(ASSETS / f'textures/item/{name}.png', rows, palette)
     write_json(ASSETS / f'models/item/{name}.json', {'parent':'minecraft:item/handheld' if name == 'foil_launcher' else 'minecraft:item/generated', 'textures':{'layer0':f'dimensioncollapse:item/{name}'}})
@@ -100,9 +106,18 @@ recipe('foil_launcher',['ICI','EDE',' II'],{'I':'iron_ingot','C':'crossbow','E':
 recipe('expansion_suppressor',['IAI','ERE','IOI'],{'I':'iron_ingot','A':'amethyst_shard','E':'ender_pearl','R':'redstone_block','O':'obsidian'})
 recipe('transfer_receiver',['IEI','ECE','IRI'],{'I':'iron_ingot','E':'ender_pearl','C':'chest','R':'redstone'})
 recipe('resource_transmitter',[' A ','ERE',' I '],{'A':'amethyst_shard','E':'ender_pearl','R':'redstone','I':'iron_ingot'})
+recipe('player_transmitter',['AEA','DCD','ARA'],{'A':'amethyst_shard','E':'ender_eye','D':'diamond','C':'chorus_fruit','R':'redstone'})
 recipe('dimension_suppressant',[' A ',' E ',' B '],{'A':'amethyst_shard','E':'ender_pearl','B':'glass_bottle'})
 
 zh = {
+ 'item.dimensioncollapse.player_transmitter':'玩家传送器',
+ 'item.dimensioncollapse.player_transmitter.desc.1':'右键自动撤离当前维度的坍缩区域，无需接收箱。',
+ 'item.dimensioncollapse.player_transmitter.desc.2':'寻找远离所有坍缩前沿至少 512 格的安全落脚点。',
+ 'item.dimensioncollapse.player_transmitter.desc.3':'保留背包，可重复使用；成功后冷却 10 秒。',
+ 'message.dimensioncollapse.escape.unavailable':'当前维度没有坍缩，或当前状态无法撤离。',
+ 'message.dimensioncollapse.escape.searching':'正在定位远离坍缩的安全落脚点……',
+ 'message.dimensioncollapse.escape.failed':'未找到安全落脚点，请稍后重试。玩家与物品保持原位。',
+ 'message.dimensioncollapse.escape.success':'已撤离至三维区域：%s',
  'item.dimensioncollapse.dual_vector_foil':'二向箔', 'item.dimensioncollapse.foil_launcher':'二向箔发射器',
  'item.dimensioncollapse.resource_transmitter':'跨维资源传送器','block.dimensioncollapse.expansion_suppressor':'扩散抑制装置',
  'block.dimensioncollapse.transfer_receiver':'三维资源接收箱','entity.dimensioncollapse.dual_vector_foil':'二向箔',
@@ -137,6 +152,14 @@ zh = {
  'message.dimensioncollapse.transfer.sent':'已传送 %s × %s 到三维接收箱。'
 }
 en = {
+ 'item.dimensioncollapse.player_transmitter':'Player Transmitter',
+ 'item.dimensioncollapse.player_transmitter.desc.1':'Use to escape collapses in this dimension. No receiver required.',
+ 'item.dimensioncollapse.player_transmitter.desc.2':'Finds safe footing at least 512 blocks beyond every collapse front.',
+ 'item.dimensioncollapse.player_transmitter.desc.3':'Keeps your inventory. Reusable, with a 10-second cooldown.',
+ 'message.dimensioncollapse.escape.unavailable':'No collapse in this dimension, or evacuation is unavailable in this state.',
+ 'message.dimensioncollapse.escape.searching':'Locating safe ground far outside the collapse…',
+ 'message.dimensioncollapse.escape.failed':'No safe landing found. Try again shortly. You and your items remain here.',
+ 'message.dimensioncollapse.escape.success':'Evacuated to three-dimensional space: %s',
  'item.dimensioncollapse.dual_vector_foil':'Dual-Vector Foil', 'item.dimensioncollapse.foil_launcher':'Foil Launcher',
  'item.dimensioncollapse.resource_transmitter':'Dimensional Resource Transmitter','block.dimensioncollapse.expansion_suppressor':'Expansion Suppressor',
  'block.dimensioncollapse.transfer_receiver':'3D Resource Receiver','entity.dimensioncollapse.dual_vector_foil':'Dual-Vector Foil',

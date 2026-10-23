@@ -101,6 +101,15 @@ public final class TwoDimensional {
     private static void update(ServerPlayer player) {
         boolean wanted = !player.isSpectator() && isAdapted(player)
                 && CollapseQueries.containing(player.level(), player.position()) != null;
+        setState(player, wanted);
+    }
+
+    /** Leave immediately after evacuation, including collision size, flight attribute and client sync. */
+    public static void leave(ServerPlayer player) {
+        setState(player, false);
+    }
+
+    private static void setState(ServerPlayer player, boolean wanted) {
         if (wanted == is(player)) return;
 
         apply(player, wanted);

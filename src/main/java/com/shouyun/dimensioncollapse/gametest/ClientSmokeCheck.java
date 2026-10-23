@@ -33,6 +33,8 @@ public final class ClientSmokeCheck {
     private static int ticks;
     private static volatile int cowId = -1;
     private static boolean verified;
+    private static int escapedAt;
+    private static boolean startedInTwoDimensions;
     private static final StringBuilder REPORT = new StringBuilder();
 
     @SubscribeEvent public static void tick(ClientTickEvent.Post event) {
@@ -114,8 +116,34 @@ public final class ClientSmokeCheck {
         });
         if (ticks >= 190 && ticks <= 235) { mc.player.setYRot(180); mc.player.setXRot(25); }
         if (ticks == 230) Screenshot.grab(mc.gameDirectory, "devices-client.png", mc.getMainRenderTarget(), message -> {});
-        if (ticks == 260) {
-            record(mc, "SMOKE_RESULT=" + (verified ? "PASS" : "FAIL"));
+        if (ticks == 260) mc.getSingleplayerServer().execute(() -> {
+            var server = mc.getSingleplayerServer();
+            var level = server.overworld();
+            var player = server.getPlayerList().getPlayer(mc.player.getUUID());
+            player.getInventory().setItem(6, new ItemStack(ModItems.PLAYER_TRANSMITTER.get()));
+            player.addEffect(new net.minecraft.world.effect.MobEffectInstance(ModEffects.DIMENSIONAL_ADAPTATION, 1200));
+            CollapseManager.start(level, player.blockPosition(), 2, 0, 0);
+        });
+        if (ticks == 280) {
+            startedInTwoDimensions = com.shouyun.dimensioncollapse.collapse.TwoDimensional.is(mc.player);
+            record(mc, "PLAYER_ESCAPE_STARTED_2D=" + startedInTwoDimensions);
+            mc.player.getInventory().selected = 6;
+            mc.gameMode.useItem(mc.player, net.minecraft.world.InteractionHand.MAIN_HAND);
+        }
+        if (ticks > 290 && escapedAt == 0 && Math.hypot(mc.player.getX() - 9.5, mc.player.getZ() - 7) > 512
+                && !com.shouyun.dimensioncollapse.collapse.TwoDimensional.is(mc.player) && mc.player.getBbHeight() > 1.7) {
+            escapedAt = ticks;
+            boolean inventory = mc.player.getInventory().getItem(5).getCount() == 64
+                    && mc.player.getInventory().getItem(6).is(ModItems.PLAYER_TRANSMITTER);
+            verified &= startedInTwoDimensions && inventory;
+            record(mc, "PLAYER_ESCAPE_CLIENT=true pos=" + mc.player.position() + " height=" + mc.player.getBbHeight() + " inventory=" + inventory);
+        }
+        if (escapedAt > 0 && ticks == escapedAt + 40) {
+            mc.player.setXRot(20);
+            Screenshot.grab(mc.gameDirectory, "player-escape-client.png", mc.getMainRenderTarget(), message -> {});
+        }
+        if ((escapedAt > 0 && ticks >= escapedAt + 60) || ticks >= 740) {
+            record(mc, "SMOKE_RESULT=" + (verified && escapedAt > 0 ? "PASS" : "FAIL"));
             mc.stop();
         }
     }

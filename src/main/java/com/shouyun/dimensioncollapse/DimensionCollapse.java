@@ -47,6 +47,7 @@ public class DimensionCollapse {
 
         CollapseManager.register(NeoForge.EVENT_BUS);
         TwoDimensional.register(NeoForge.EVENT_BUS);
+        com.shouyun.dimensioncollapse.teleport.PlayerEscape.register(NeoForge.EVENT_BUS);
         NeoForge.EVENT_BUS.addListener(CollapseCommand::register);
 
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);

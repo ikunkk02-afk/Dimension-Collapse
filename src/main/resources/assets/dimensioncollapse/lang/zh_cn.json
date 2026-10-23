@@ -71,5 +71,13 @@
   "subtitles.dimensioncollapse.transfer.send": "资源传送",
   "subtitles.dimensioncollapse.transfer.receive": "资源接收",
   "subtitles.dimensioncollapse.transfer.link": "接收箱绑定",
-  "subtitles.dimensioncollapse.transfer.fail": "传送失败"
+  "subtitles.dimensioncollapse.transfer.fail": "传送失败",
+  "item.dimensioncollapse.player_transmitter": "玩家传送器",
+  "item.dimensioncollapse.player_transmitter.desc.1": "右键自动撤离当前维度的坍缩区域，无需接收箱。",
+  "item.dimensioncollapse.player_transmitter.desc.2": "寻找远离所有坍缩前沿至少 512 格的安全落脚点。",
+  "item.dimensioncollapse.player_transmitter.desc.3": "保留背包，可重复使用；成功后冷却 10 秒。",
+  "message.dimensioncollapse.escape.unavailable": "当前维度没有坍缩，或当前状态无法撤离。",
+  "message.dimensioncollapse.escape.searching": "正在定位远离坍缩的安全落脚点……",
+  "message.dimensioncollapse.escape.failed": "未找到安全落脚点，请稍后重试。玩家与物品保持原位。",
+  "message.dimensioncollapse.escape.success": "已撤离至三维区域：%s"
 }

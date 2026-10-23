@@ -7,6 +7,7 @@ import com.shouyun.dimensioncollapse.item.DescribedBlockItem;
 import com.shouyun.dimensioncollapse.item.DualVectorFoilItem;
 import com.shouyun.dimensioncollapse.item.FoilLauncherItem;
 import com.shouyun.dimensioncollapse.item.ResourceTransmitterItem;
+import com.shouyun.dimensioncollapse.item.PlayerTransmitterItem;
 
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -27,6 +28,8 @@ public final class ModItems {
             () -> new FoilLauncherItem(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC)));
     public static final DeferredItem<ResourceTransmitterItem> RESOURCE_TRANSMITTER = ITEMS.register("resource_transmitter",
             () -> new ResourceTransmitterItem(new Item.Properties().stacksTo(1).rarity(Rarity.RARE)));
+    public static final DeferredItem<PlayerTransmitterItem> PLAYER_TRANSMITTER = ITEMS.register("player_transmitter",
+            () -> new PlayerTransmitterItem(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC)));
     public static final DeferredItem<DescribedBlockItem> EXPANSION_SUPPRESSOR = ITEMS.register("expansion_suppressor",
             () -> new DescribedBlockItem(ModBlocks.EXPANSION_SUPPRESSOR.get(), new Item.Properties().rarity(Rarity.RARE), 3));
     public static final DeferredItem<DescribedBlockItem> TRANSFER_RECEIVER = ITEMS.register("transfer_receiver",
@@ -50,6 +53,7 @@ public final class ModItems {
                         output.accept(FOIL_LAUNCHER.get());
                         output.accept(EXPANSION_SUPPRESSOR.get());
                         output.accept(RESOURCE_TRANSMITTER.get());
+                        output.accept(PLAYER_TRANSMITTER.get());
                         output.accept(TRANSFER_RECEIVER.get());
                     })
                     .build());

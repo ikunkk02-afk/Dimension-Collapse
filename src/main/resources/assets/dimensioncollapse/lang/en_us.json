@@ -71,5 +71,13 @@
   "subtitles.dimensioncollapse.transfer.send": "Transfer Send",
   "subtitles.dimensioncollapse.transfer.receive": "Transfer Receive",
   "subtitles.dimensioncollapse.transfer.link": "Transfer Link",
-  "subtitles.dimensioncollapse.transfer.fail": "Transfer Fail"
+  "subtitles.dimensioncollapse.transfer.fail": "Transfer Fail",
+  "item.dimensioncollapse.player_transmitter": "Player Transmitter",
+  "item.dimensioncollapse.player_transmitter.desc.1": "Use to escape collapses in this dimension. No receiver required.",
+  "item.dimensioncollapse.player_transmitter.desc.2": "Finds safe footing at least 512 blocks beyond every collapse front.",
+  "item.dimensioncollapse.player_transmitter.desc.3": "Keeps your inventory. Reusable, with a 10-second cooldown.",
+  "message.dimensioncollapse.escape.unavailable": "No collapse in this dimension, or evacuation is unavailable in this state.",
+  "message.dimensioncollapse.escape.searching": "Locating safe ground far outside the collapse…",
+  "message.dimensioncollapse.escape.failed": "No safe landing found. Try again shortly. You and your items remain here.",
+  "message.dimensioncollapse.escape.success": "Evacuated to three-dimensional space: %s"
 }

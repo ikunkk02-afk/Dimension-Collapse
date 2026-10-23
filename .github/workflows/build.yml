@@ -28,3 +28,20 @@ jobs:
 
       - name: Build with Gradle
         run: ./gradlew build
+
+      - name: Run gameplay integration checks
+        run: ./gradlew runGameTestServer
+
+      - name: Upload mod jar
+        uses: actions/upload-artifact@v4
+        with:
+          name: dimensioncollapse-neoforge-1.21.1
+          path: build/libs/*.jar
+
+      - name: Upload test logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gameplay-test-logs
+          path: build/gametest-run/logs/latest.log
+          if-no-files-found: ignore
